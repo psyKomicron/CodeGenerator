@@ -21,7 +21,7 @@ public class AppWindow extends JFrame {
 	}
 	
 	/**
-	 *  find a way to know the size of any screen
+	 *  ? find a way to know the size of any screen
 	 * @param r
 	 * @return int
 	 */
@@ -30,7 +30,7 @@ public class AppWindow extends JFrame {
 	}
 	
 	/**
-	 * find a way to know the size of any screen
+	 * ? find a way to know the size of any screen
 	 * @param r
 	 * @return int
 	 */
@@ -39,7 +39,7 @@ public class AppWindow extends JFrame {
 	}
 	
 	/**
-	 * find a way to know the size of any screen
+	 * ? find a way to know the size of any screen
 	 * @param frameSize size
 	 */
 	public void centerOnScreen(Rectangle frameSize) {

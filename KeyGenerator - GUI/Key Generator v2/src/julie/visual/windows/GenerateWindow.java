@@ -111,7 +111,7 @@ public class GenerateWindow extends AppWindow implements Runnable {
 		private GenerateWindow parent;
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			MenuWindow mw = new MenuWindow("Menu", parent);
+			/*MenuWindow mw = */new MenuWindow("Menu", parent);
 		}
 		
 		protected OpenMenuButtListener(GenerateWindow parent) {

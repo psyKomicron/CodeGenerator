@@ -37,8 +37,6 @@ public class MenuWindow extends AppWindow {
 		setLayout(new GridBagLayout());
 		numButton.addActionListener(new NumButtonListener());
 		alphButton.addActionListener(new AlphButtonListener());
-		numButton.setEnabled(true);
-		alphButton.setEnabled(false);
 		add(numButton);
 		add(alphButton);
 		setup();
@@ -61,7 +59,6 @@ public class MenuWindow extends AppWindow {
 	}
 	
 	public void changeGeneratorMode(String mode) {
-		System.out.println(mode);
 		generateWindow.setCodeGeneratorMode(mode);
 	}
 	

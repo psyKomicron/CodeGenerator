@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import julie.alphaNumGen.AlphaNumGenerator;
-import julie.alphabet.Alphabet;
 import julie.codeGenerator.IGenerator;
 import julie.visual.assets.panes.MyTextArea;
 
@@ -55,6 +53,7 @@ public class CodeWindow extends JDialog implements Runnable {
 		setLocation(move(pos, _gw.getLocation()));
 		setLayout(new BorderLayout());
 		setUndecorated(true);
+		//
 		ArrayList<String> codes = createCodes();
 		MyTextArea textArea = new MyTextArea();
 		add(closeButton, BorderLayout.SOUTH);
