@@ -7,33 +7,37 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import julie.alphabet.Alphabet;
-import julie.codeGenerator.CodeGenerator;
+import julie.codeGenerator.IGenerator;
+import julie.codeGenerator.generators.CodeGenerator;
 
 /**
  * @author julie
  *
  */
-public class AlphaNumGenerator extends CodeGenerator {
+public class AlphaNumGenerator extends CodeGenerator implements IGenerator {
+	private Alphabet alphabet = new Alphabet();
+	
+	private final static int codeLength = 10;
 
-	public AlphaNumGenerator(Alphabet _alphabet) {
-		super(_alphabet);
+	public AlphaNumGenerator() {
+		super();
 		Rndm.setAlphabetSize(32);
 		Rndm.setRandomInterval(10);
 	}
 
 	@Override
 	public void generate() {
-		code = "";
-		Alphabet _alphabet = getAlphabet();
+		String code = "";
 		Math.random();
 		Rndm.generateRndmNum();
-		while (code.length() < 11) {
+		while (code.length() < codeLength) {
 			if (isNumber()) {
 				code += Rndm.generateRndmNum();
 			} else {
-				code += _alphabet.getAlphabet().get(Rndm.generateRndmChar());
+				code += alphabet.getAlphabet().get(Rndm.generateRndmChar());
 			}
 		}
+		setCode(code);
 	}
 	
 	private boolean isNumber() {
@@ -45,22 +49,24 @@ public class AlphaNumGenerator extends CodeGenerator {
 			return false;
 		}
 	}
-	
-	@Override
-	public void writeCode(String _code, String _fileName) throws IOException {
-	}
 
 	@Override
 	public void shake() {
 		ArrayList<Character> _arrayOfChar = new ArrayList<>();
-		Alphabet _a = getAlphabet();
-		for (@SuppressWarnings("unused") Character _c : _a.getAlphabet()) {
-			char _rndmChar = _a.getAlphabet().get(Rndm.generateRndmChar());
+		for (@SuppressWarnings("unused") Character _c : alphabet.getAlphabet()) {
+			char _rndmChar = alphabet.getAlphabet().get(Rndm.generateRndmChar());
 			while (_arrayOfChar.contains(_rndmChar)) {
-				_rndmChar = _a.getAlphabet().get(Rndm.generateRndmChar());
+				_rndmChar = alphabet.getAlphabet().get(Rndm.generateRndmChar());
 			}
 		}
-		setAlphabet(new Alphabet(_arrayOfChar));
+		alphabet = new Alphabet(_arrayOfChar);
+	}
+
+	@Override
+	public void setCodeLength(int length) {	}
+	
+	@Override
+	public void writeCode(String _code, String _fileName) throws IOException {
 	}
 
 }
