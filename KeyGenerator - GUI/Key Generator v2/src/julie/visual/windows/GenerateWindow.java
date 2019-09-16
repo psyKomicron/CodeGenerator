@@ -19,6 +19,7 @@ import julie.alphaNumGen.AlphaNumGenerator;
 import julie.codeGenerator.IGenerator;
 import julie.codeGenerator.generators.NumGenerator;
 import julie.visual.assets.buttons.ActionButton;
+import julie.visual.assets.buttons.GenerateWindowButton;
 import julie.visual.windows.menuwindow.MenuWindow;
 
 
@@ -34,8 +35,8 @@ public class GenerateWindow extends AppWindow implements Runnable {
 	
 	private String generatorType = "";
 	
-	private ActionButton generateButton = new ActionButton("Generate");
-	private ActionButton closeButton = new ActionButton("Menu");
+	private ActionButton generateButton = new GenerateWindowButton("Generate");
+	private ActionButton closeButton = new GenerateWindowButton("Menu");
 	
 	private JPanel buttonPane = new JPanel();
 	private JPanel contentPane = new JPanel();

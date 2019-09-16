@@ -3,13 +3,17 @@
  */
 package julie.visual.windows.menuwindow;
 
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
+import julie.visual.assets.buttons.ModeButton;
 import julie.visual.windows.AppWindow;
 import julie.visual.windows.GenerateWindow;
 
@@ -30,15 +34,14 @@ public class MenuWindow extends AppWindow {
 	public MenuWindow(String name, GenerateWindow generateWindow) {
 		super(name);
 		this.generateWindow = generateWindow;
-		setSize(new Dimension(500, 300));
+		// window parameters
+		setTitle("Parameters menu");
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		centerOnScreen(getBounds());
-		setLayout(new GridBagLayout());
+		// buttons
 		numButton.addActionListener(new NumButtonListener());
 		alphButton.addActionListener(new AlphButtonListener());
-		add(numButton);
-		add(alphButton);
+		addComponents();
 		setup();
 	}
 	
@@ -55,7 +58,27 @@ public class MenuWindow extends AppWindow {
 			numButton.setEnabled(true);
 			alphButton.setEnabled(true);
 		}
+		pack();
+		centerOnScreen(getBounds());
 		setVisible(true);
+	}
+	
+	private void addComponents() {
+		//
+		GridBagConstraints gbc = new GridBagConstraints();
+		GridBagLayout layout = new GridBagLayout();
+		setLayout(layout);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		add(numButton, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		add(alphButton, gbc);
+		//
 	}
 	
 	public void changeGeneratorMode(String mode) {

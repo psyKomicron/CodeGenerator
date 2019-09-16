@@ -1,9 +1,9 @@
 /**
  * 
  */
-package julie.visual.windows.menuwindow;
+package julie.visual.assets.buttons;
 
-import julie.visual.assets.buttons.ActionButton;
+import java.awt.Dimension;
 
 /**
  * 
@@ -19,6 +19,7 @@ public class ModeButton extends ActionButton {
 
 	public ModeButton(String text) {
 		super(text);
+		setPreferredSize(new Dimension(200, 50));
 	}
 
 }
