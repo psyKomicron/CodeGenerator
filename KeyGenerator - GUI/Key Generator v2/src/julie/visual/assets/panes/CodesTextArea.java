@@ -12,14 +12,14 @@ import javax.swing.JTextArea;
  * @author julie
  *
  */
-public class MyTextArea extends JTextArea {
+public class CodesTextArea extends JTextArea {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private final static String newLine = "\n";
 
 	
-	public MyTextArea() {
+	public CodesTextArea() {
 		super();
 		setup();
 		revalidate();

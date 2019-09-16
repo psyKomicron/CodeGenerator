@@ -19,7 +19,7 @@ import julie.alphaNumGen.AlphaNumGenerator;
 import julie.codeGenerator.IGenerator;
 import julie.codeGenerator.generators.NumGenerator;
 import julie.visual.assets.buttons.ActionButton;
-import julie.visual.assets.buttons.GenerateWindowButton;
+import julie.visual.assets.buttons.generatewindow.GenerateWindowButton;
 import julie.visual.windows.menuwindow.MenuWindow;
 
 
@@ -30,6 +30,8 @@ import julie.visual.windows.menuwindow.MenuWindow;
 public class GenerateWindow extends AppWindow implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private static int numberOfCodeGeneration = 10;
 	
 	private IGenerator generator;
 	
@@ -69,7 +71,10 @@ public class GenerateWindow extends AppWindow implements Runnable {
 	
 	public void doGenerateAction() {
 		if (generator != null) {
-			codeWindows.add(new CodeWindow(codeWindows.size(), this));
+			CodeWindow c = new CodeWindow(codeWindows.size(), this);
+			c.setRepetitionNumber(numberOfCodeGeneration);
+			codeWindows.add(c);
+			c.launchCalculation();
 		}
 		else JOptionPane.showMessageDialog(this, "Choose a mode first (Menu button)");
 	}
@@ -86,6 +91,8 @@ public class GenerateWindow extends AppWindow implements Runnable {
 			generator = new AlphaNumGenerator();
 		else if (mode.equalsIgnoreCase("numerical"))
 			generator = new NumGenerator();
+		else
+			generator = null;
 		generatorType = mode;
 	}
 	
@@ -95,6 +102,15 @@ public class GenerateWindow extends AppWindow implements Runnable {
 	
 	public String getGeneratorType() {
 		return generatorType;
+	}
+	
+	public void setCodeGenerationNumber(int n) {
+		System.out.println(n);
+		numberOfCodeGeneration = n;
+	}
+	
+	public static int getCodeGenerationNumber() {
+		return numberOfCodeGeneration;
 	}
 	
 	protected final GenerateWindow getThis() {
@@ -112,7 +128,7 @@ public class GenerateWindow extends AppWindow implements Runnable {
 		private GenerateWindow parent;
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/*MenuWindow mw = */new MenuWindow("Menu", parent);
+			new MenuWindow("Menu", parent);
 		}
 		
 		protected OpenMenuButtListener(GenerateWindow parent) {

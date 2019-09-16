@@ -16,7 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import julie.codeGenerator.IGenerator;
-import julie.visual.assets.panes.MyTextArea;
+import julie.visual.assets.panes.CodesTextArea;
 
 
 
@@ -28,16 +28,41 @@ public class CodeWindow extends JDialog implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JButton closeButton = new MyJButton(new ClButtListener());
+	private JButton closeButton = new JButton("CLOSE");
 	
 	private GenerateWindow parent;
+
+	private int repetitionNumber = 10;
 	
 	
 	public CodeWindow(int pos, GenerateWindow _gw) {
 		super(_gw);
 		parent = _gw;
 		setup(pos, _gw);
+		closeButton.addActionListener(new ClButtListener());	
+	}
+	
+	public void launchCalculation() {
+		displayCodes();
 		setVisible(true);
+	}
+	
+	public void setRepetitionNumber(int number) {
+		if (number >= 1 & number <= 150000) {
+			repetitionNumber = number;
+		}
+	}
+	
+	@Override
+	public void run() {
+		System.out.println("second window running");
+	}
+	
+	/**
+	 * asks for this JDialog's parent for this JDialog to be removed
+	 */
+	public void informParentToRemove() {
+		parent.removeCodeWindow(this);
 	}
 	
 	/**
@@ -53,9 +78,11 @@ public class CodeWindow extends JDialog implements Runnable {
 		setLocation(move(pos, _gw.getLocation()));
 		setLayout(new BorderLayout());
 		setUndecorated(true);
-		//
+	}
+	
+	private void displayCodes() {
 		ArrayList<String> codes = createCodes();
-		MyTextArea textArea = new MyTextArea();
+		CodesTextArea textArea = new CodesTextArea();
 		add(closeButton, BorderLayout.SOUTH);
 		textArea.addText(codes);
 		add(textArea, BorderLayout.CENTER);
@@ -68,7 +95,7 @@ public class CodeWindow extends JDialog implements Runnable {
 	private ArrayList<String> createCodes() {
 		ArrayList<String> codes = new ArrayList<>();
 		IGenerator generator = parent.getGenerator();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < repetitionNumber ; i++) {
 			generator.generate();
 			codes.add(generator.getCode());
 		}
@@ -91,20 +118,8 @@ public class CodeWindow extends JDialog implements Runnable {
 		point.move(x, y);
 		return point;
 	}
+	
 
-	@Override
-	public void run() {
-		System.out.println("second window running");
-	}
-	
-	/**
-	 * asks for this JDialog's parent for this JDialog to be removed
-	 */
-	public void informParentToRemove() {
-		parent.removeCodeWindow(this);
-	}
-	
-	
 /************************************************************
  * 
  * nested classes
@@ -120,12 +135,4 @@ public class CodeWindow extends JDialog implements Runnable {
 		
 	}
 	
-	private class MyJButton extends JButton {
-		private static final long serialVersionUID = 1L;
-		
-		private MyJButton(ClButtListener _listener) {
-			super("CLOSE");
-			addActionListener(_listener);
-		}
-	}
 }
