@@ -5,24 +5,26 @@ package julie.visual.assets.buttons.listeners.classes;
 
 import java.awt.event.ActionEvent;
 
-import julie.visual.assets.buttons.listeners.ActionButtonListener;
+import julie.visual.assets.buttons.listeners.WindowButtonListener;
 import julie.visual.windows.menuwindow.MenuWindow;
 
 /**
  * @author julie
  *
  */
-public class ConfirmButtonListener extends ActionButtonListener {
+public class ConfirmButtonListener extends WindowButtonListener {
 
-	public ConfirmButtonListener(MenuWindow generateWindow) {
-		super(generateWindow);
+	public ConfirmButtonListener(MenuWindow menuWindow) {
+		super(menuWindow);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		String text = getParentWindow().getTextField().getText();
-		getParentWindow().getGenerateWindow().setCodeGenerationNumber(Integer.parseInt(text));
-		askToDispose(arg0);
+		if (!"".equals(text)) {
+			getParentWindow().getGenerateWindow().setCodeGenerationNumber(Integer.parseInt(text));
+			askToDispose(arg0);
+		}
 	}
 	
 }

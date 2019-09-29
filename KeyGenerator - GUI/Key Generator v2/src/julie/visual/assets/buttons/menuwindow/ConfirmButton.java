@@ -3,17 +3,11 @@
  */
 package julie.visual.assets.buttons.menuwindow;
 
-import julie.visual.assets.buttons.ActionButton;
-import julie.visual.assets.buttons.IMenuButton;
-import julie.visual.windows.menuwindow.MenuWindow;
-
 /**
  * @author julie
  *
  */
-public class ConfirmButton extends ActionButton implements IMenuButton {
-
-	private boolean pressed = false; 
+public class ConfirmButton extends MenuWindowButton {
 	
 	/**
 	 * 
@@ -27,18 +21,4 @@ public class ConfirmButton extends ActionButton implements IMenuButton {
 		super(text);
 	}
 
-	@Override
-	public boolean checkToDispose(MenuWindow mw) {
-		if (pressed) {
-			return true;
-		} else return false;
-	}
-
-	public void setPressed(boolean b) {
-		pressed = b;
-	}
-	
-	public boolean isPressed() {
-		return pressed;
-	}
 }

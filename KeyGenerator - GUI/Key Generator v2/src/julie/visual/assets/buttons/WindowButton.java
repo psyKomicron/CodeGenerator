@@ -13,7 +13,7 @@ import javax.swing.JButton;
  * @author julie
  *
  */
-public abstract class ActionButton extends JButton implements MouseListener, IMenuButton {
+public abstract class WindowButton extends JButton implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	
 	private Font focFont = new Font("Verdana", Font.BOLD, 20);
@@ -22,7 +22,7 @@ public abstract class ActionButton extends JButton implements MouseListener, IMe
 	private boolean dynamic = true;
 	
 	
-	public ActionButton(String _text) {
+	public WindowButton(String _text) {
 		super();
 		addMouseListener(this);
 		setText(_text);

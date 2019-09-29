@@ -12,13 +12,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import julie.visual.assets.buttons.ActionButton;
+import julie.visual.assets.buttons.WindowButton;
 import julie.visual.assets.buttons.listeners.classes.AlphButtonListener;
 import julie.visual.assets.buttons.listeners.classes.ConfirmButtonListener;
 import julie.visual.assets.buttons.listeners.classes.NumButtonListener;
 import julie.visual.assets.buttons.listeners.classes.QuitButtonListener;
 import julie.visual.assets.buttons.menuwindow.AlphNumButton;
 import julie.visual.assets.buttons.menuwindow.ConfirmButton;
+import julie.visual.assets.buttons.menuwindow.MenuWindowButton;
 import julie.visual.assets.buttons.menuwindow.NumButton;
 import julie.visual.assets.buttons.menuwindow.QuitMenuButton;
 import julie.visual.assets.panes.TextFieldHint;
@@ -33,11 +34,11 @@ public class MenuWindow extends AppWindow {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final ActionButton numButton = new NumButton("Numerical");
-	private final ActionButton alphButton = new AlphNumButton("Alphanumerical");
-	private final ActionButton quitButton = new QuitMenuButton("Quit & Reset", new Dimension(50, 50));
+	private final MenuWindowButton numButton = new NumButton("Numerical");
+	private final MenuWindowButton alphButton = new AlphNumButton("Alphanumerical");
+	private final MenuWindowButton quitButton = new QuitMenuButton("Quit & Reset", new Dimension(50, 50));
 	
-	private final ConfirmButton confirmButton = new ConfirmButton("Confirm");
+	private final MenuWindowButton confirmButton = new ConfirmButton("Confirm");
 	
 	private final JTextField textField = new JTextField();
 	
@@ -64,6 +65,19 @@ public class MenuWindow extends AppWindow {
 		generateWindow.setCodeGeneratorMode(mode);
 	}
 	
+	public void canDispose() {
+		if (confirmButton.isPressed() & alphnum()) {
+			dispose();
+		}
+	}
+	
+	private boolean alphnum() {
+		boolean b = false;
+		if (numButton.isPressed() | alphButton.isPressed())
+			b = true;
+		return b;
+	}
+	
 	public GenerateWindow getGenerateWindow() {
 		return this.generateWindow;
 	}
@@ -73,10 +87,10 @@ public class MenuWindow extends AppWindow {
 	}
 	
 	// getters for JButtons
-	public ActionButton getNumButton() {
+	public WindowButton getNumButton() {
 		return this.numButton;
 	}
-	public ActionButton getAlphButton() {
+	public WindowButton getAlphButton() {
 		return this.alphButton;
 	}
 	
@@ -96,16 +110,9 @@ public class MenuWindow extends AppWindow {
 		if (GenerateWindow.getCodeGenerationNumber() != 10) {
 			textField.setText(""+GenerateWindow.getCodeGenerationNumber());
 		}
-		//confirmButton.setPressed(false);
 		pack();
 		centerOnScreen(getBounds());
 		setVisible(true);
-	}
-	
-	public void canDispose() {
-		if ()
-		if (numButton.checkToDispose(this) & alphButton.checkToDispose(this) & confirmButton.checkToDispose(this))
-			dispose();
 	}
 	
 	private void addComponents() {
