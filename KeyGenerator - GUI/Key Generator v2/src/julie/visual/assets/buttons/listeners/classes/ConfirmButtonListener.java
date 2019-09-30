@@ -19,11 +19,11 @@ public class ConfirmButtonListener extends WindowButtonListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		String text = getParentWindow().getTextField().getText();
 		if (!"".equals(text)) {
 			getParentWindow().getGenerateWindow().setCodeGenerationNumber(Integer.parseInt(text));
-			askToDispose(arg0);
+			askToDispose(e);
 		}
 	}
 	

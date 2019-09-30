@@ -6,6 +6,7 @@ package julie.visual.windows.menuwindow;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -110,6 +111,7 @@ public class MenuWindow extends AppWindow {
 		if (GenerateWindow.getCodeGenerationNumber() != 10) {
 			textField.setText(""+GenerateWindow.getCodeGenerationNumber());
 		}
+		textField.setPreferredSize(new Dimension(0, 50));
 		pack();
 		centerOnScreen(getBounds());
 		setVisible(true);
@@ -117,6 +119,7 @@ public class MenuWindow extends AppWindow {
 	
 	private void addComponents() {
 		//
+		int inset;
 		GridBagConstraints gbcHigh = new GridBagConstraints();
 		GridBagConstraints gbcCenter = new GridBagConstraints();
 		GridBagConstraints gbcLow = new GridBagConstraints();
@@ -124,7 +127,6 @@ public class MenuWindow extends AppWindow {
 		JPanel pane = new JPanel();
 		setContentPane(pane);
 		pane.setLayout(layout);
-		
 		// numButton
 		gbcHigh.fill = GridBagConstraints.HORIZONTAL;
 		gbcHigh.weightx = 0.0;
@@ -141,27 +143,30 @@ public class MenuWindow extends AppWindow {
 		gbcHigh.gridx = 1;
 		gbcHigh.gridy = 0;
 		pane.add(alphButton, gbcHigh);
-		
 		// text field hint
 		gbcCenter.fill = GridBagConstraints.HORIZONTAL;
 		gbcCenter.weighty = 1.0;
 		gbcCenter.anchor = GridBagConstraints.CENTER;
 		gbcCenter.gridx = 0;
 		gbcCenter.gridy = 2;
+		inset = 40;
+		gbcCenter.insets = new Insets(inset, 0, inset, 0);
 		pane.add(textFieldHint, gbcCenter);
 		// text field
 		gbcCenter.fill = GridBagConstraints.HORIZONTAL;
 		gbcCenter.weighty = 1.0;
 		gbcCenter.gridx = 1;
 		gbcCenter.gridy = 2;
+		setInsets(gbcCenter, 20, 0, 20, 0);
 		pane.add(textField, gbcCenter);
 		// confirm button
 		gbcCenter.fill = GridBagConstraints.HORIZONTAL;
 		gbcCenter.weighty = 1.0;
 		gbcCenter.gridx = 1;
 		gbcCenter.gridy = 3;
+		inset = 90;
+		setInsets(gbcCenter, 0, inset, 0, inset);
 		pane.add(confirmButton, gbcCenter);
-		
 		// quit button
 		gbcLow.fill = GridBagConstraints.HORIZONTAL;
 		gbcLow.weightx = 0.5;
@@ -171,6 +176,10 @@ public class MenuWindow extends AppWindow {
 		gbcLow.gridx = 0;
 		gbcLow.gridy = 4;
 		pane.add(quitButton, gbcLow);
+	}
+	
+	private final void setInsets(GridBagConstraints gbc, int x1, int y1, int x2, int y2) {
+		gbc.insets = new Insets(x1, y1, x2, y2);
 	}
 	
 	private void addActionListeners() {

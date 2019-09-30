@@ -6,7 +6,6 @@ package julie.visual.assets.buttons.listeners.classes;
 import java.awt.event.ActionEvent;
 
 import julie.visual.assets.buttons.listeners.WindowButtonListener;
-import julie.visual.assets.buttons.menuwindow.MenuWindowButton;
 import julie.visual.windows.menuwindow.MenuWindow;
 
 /**
@@ -20,10 +19,10 @@ public class QuitButtonListener extends WindowButtonListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		getParentWindow().getGenerateWindow().setCodeGeneratorMode("");
 		getParentWindow().getGenerateWindow().setCodeGenerationNumber(10);
-		this.askToDispose(arg0);
+		this.askToDispose(e);
 	}
 	
 }
