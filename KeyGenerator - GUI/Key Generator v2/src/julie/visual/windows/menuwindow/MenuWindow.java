@@ -24,8 +24,8 @@ import julie.visual.assets.buttons.menuwindow.MenuWindowButton;
 import julie.visual.assets.buttons.menuwindow.NumButton;
 import julie.visual.assets.buttons.menuwindow.QuitMenuButton;
 import julie.visual.assets.panes.TextFieldHint;
-import julie.visual.windows.AppWindow;
-import julie.visual.windows.GenerateWindow;
+import julie.visual.windows.assets.AppWindow;
+import julie.visual.windows.gui.generatewindow.GenerateWindow;
 
 /**
  * @author julie

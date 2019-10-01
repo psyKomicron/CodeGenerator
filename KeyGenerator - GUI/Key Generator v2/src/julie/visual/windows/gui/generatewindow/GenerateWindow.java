@@ -1,7 +1,7 @@
 /**
  * 
  */
-package julie.visual.windows;
+package julie.visual.windows.gui.generatewindow;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -20,6 +20,8 @@ import julie.codeGenerator.IGenerator;
 import julie.codeGenerator.generators.NumGenerator;
 import julie.visual.assets.buttons.WindowButton;
 import julie.visual.assets.buttons.generatewindow.GenerateWindowButton;
+import julie.visual.windows.assets.AppWindow;
+import julie.visual.windows.codeWindow.CodeWindow;
 import julie.visual.windows.menuwindow.MenuWindow;
 
 
@@ -105,7 +107,6 @@ public class GenerateWindow extends AppWindow implements Runnable {
 	}
 	
 	public void setCodeGenerationNumber(int n) {
-		System.out.println(n);
 		numberOfCodeGeneration = n;
 	}
 	

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package julie.visual.windows;
+package julie.visual.windows.assets;
 
 import java.awt.Rectangle;
 

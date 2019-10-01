@@ -1,7 +1,7 @@
 /**
  * 
  */
-package julie.visual.windows.gui;
+package julie.visual.windows.assets;
 
 /**
  * @author julie

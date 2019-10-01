@@ -3,7 +3,7 @@
  */
 package julie.app;
 
-import julie.visual.windows.GenerateWindow;
+import julie.visual.windows.gui.generatewindow.GenerateWindow;
 
 /**
  * @author julie

@@ -1,11 +1,13 @@
 /**
  * 
  */
-package julie.visual.windows;
+package julie.visual.windows.codeWindow;
 
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -13,10 +15,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import julie.codeGenerator.IGenerator;
 import julie.visual.assets.panes.CodesTextArea;
+import julie.visual.windows.gui.generatewindow.GenerateWindow;
 
 
 
@@ -24,25 +28,41 @@ import julie.visual.assets.panes.CodesTextArea;
  * @author julie
  *
  */
-public class CodeWindow extends JDialog implements Runnable {
+public class CodeWindow extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private JButton closeButton = new JButton("CLOSE");
 	
 	private GenerateWindow parent;
+	
+	private CodesTextArea textArea = new CodesTextArea();
 
 	private int repetitionNumber = 10;
 	
 	
-	public CodeWindow(int pos, GenerateWindow _gw) {
-		super(_gw);
-		parent = _gw;
-		setup(pos, _gw);
+	public CodeWindow(int pos, GenerateWindow gw) {
+		super();
+		parent = gw;
+		setup(pos, gw);
 		closeButton.addActionListener(new ClButtListener());	
 	}
 	
+	/**
+	 * Used only by the constructor. Setup all needed parameters.
+	 * @param pos (int) number representing the position of the CodeWindow  
+	 * @param gw Parent GenerateWindow. The window (this) is not directly 
+	 * 		  fitted into the GenerateWindow but rather uses the position 
+	 * 		  of it to calculate it's own
+	 */
+	private void setup(int pos, GenerateWindow gw) {
+		setSize(new Dimension(500, 300));
+		setLocation(move(pos, gw.getLocation()));
+		setLayout(new BorderLayout());
+	}
+	
 	public void launchCalculation() {
+		addComponents();
 		displayCodes();
 		setVisible(true);
 	}
@@ -65,27 +85,33 @@ public class CodeWindow extends JDialog implements Runnable {
 		parent.removeCodeWindow(this);
 	}
 	
-	/**
-	 * Used only by the constructor. Setup all needed parameters.
-	 * @param pos (int) number representing the position of the CodeWindow  
-	 * @param _gw Parent GenerateWindow. The window (this) is not directly 
-	 * 		  fitted into the GenerateWindow but rather uses the position 
-	 * 		  of it to calculate it's own
-	 */
-	private void setup(int pos, GenerateWindow _gw) {
-		setSize(new Dimension(200, 300));
-		setResizable(false);
-		setLocation(move(pos, _gw.getLocation()));
-		setLayout(new BorderLayout());
-		setUndecorated(true);
+	private void addComponents() {
+		GridBagConstraints gbc = new GridBagConstraints();
+		GridBagLayout layout = new GridBagLayout();
+		JPanel pane = new JPanel();
+		setContentPane(pane);
+		pane.setLayout(layout);
+		//
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.0;
+		gbc.weighty = 1.0;
+		gbc.gridx =0;
+		gbc.gridy =0;
+		gbc.anchor = GridBagConstraints.NORTH;
+		pane.add(textArea, gbc);
+		//
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.0;
+		gbc.weighty = 1.0;
+		gbc.gridx =1;
+		gbc.gridy =1;
+		gbc.anchor = GridBagConstraints.SOUTH;
+		pane.add(closeButton, gbc);
 	}
 	
 	private void displayCodes() {
 		ArrayList<String> codes = createCodes();
-		CodesTextArea textArea = new CodesTextArea();
-		add(closeButton, BorderLayout.SOUTH);
 		textArea.addText(codes);
-		add(textArea, BorderLayout.CENTER);
 	}
 	
 	/**
@@ -110,7 +136,7 @@ public class CodeWindow extends JDialog implements Runnable {
 	 */
 	private Point move(int offset, Point location) {
 		Point point = new Point();
-		Rectangle rect = getParent().getBounds();
+		Rectangle rect = parent.getBounds();
 		int x = (int)rect.getCenterX();
 		int y = (int)rect.getCenterY() + 197;
 		x -= (getWidth()/2)-(offset*10);
