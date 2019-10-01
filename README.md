@@ -1,2 +1,2 @@
 # CodeGenerator
-11 character alphanumerical code generator with GUI
+variable character alphanumerical code generator with GUI
