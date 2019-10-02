@@ -6,6 +6,7 @@ package julie.visual.windows.codeWindow;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
@@ -16,7 +17,9 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import julie.codeGenerator.IGenerator;
 import julie.visual.assets.panes.CodesTextArea;
@@ -89,24 +92,36 @@ public class CodeWindow extends JFrame implements Runnable {
 		GridBagConstraints gbc = new GridBagConstraints();
 		GridBagLayout layout = new GridBagLayout();
 		JPanel pane = new JPanel();
+		//scrollablePane.setLayout(new BorderLayout());
 		setContentPane(pane);
 		pane.setLayout(layout);
-		//
+//		text area to display generated codes
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.weightx = 0.0;
 		gbc.weighty = 1.0;
 		gbc.gridx =0;
 		gbc.gridy =0;
 		gbc.anchor = GridBagConstraints.NORTH;
-		pane.add(textArea, gbc);
-		//
+		JScrollPane scrollablePane = new JScrollPane(textArea);
+		pane.add(scrollablePane, gbc);
+//		quit button
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.weightx = 0.0;
 		gbc.weighty = 1.0;
-		gbc.gridx =1;
+		gbc.gridx =0;
 		gbc.gridy =1;
 		gbc.anchor = GridBagConstraints.SOUTH;
 		pane.add(closeButton, gbc);
+//		label to lead user
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.0;
+		gbc.weighty = 1.0;
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.EAST;
+		String text = 
+				"<html><p>Scroll UP to show all codes</p><p>Click on close to close this window</p></html>";
+		pane.add(new JLabel(text), gbc);
 	}
 	
 	private void displayCodes() {
