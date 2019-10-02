@@ -149,8 +149,7 @@ public class MenuWindow extends AppWindow {
 		gbcCenter.anchor = GridBagConstraints.CENTER;
 		gbcCenter.gridx = 0;
 		gbcCenter.gridy = 2;
-		inset = 40;
-		gbcCenter.insets = new Insets(inset, 0, inset, 0);
+		setInsets(gbcCenter, 40, 10, 40, 0);
 		pane.add(textFieldHint, gbcCenter);
 		// text field
 		gbcCenter.fill = GridBagConstraints.HORIZONTAL;
