@@ -3,6 +3,7 @@
  */
 package julie.visual.windows.menuwindow;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,7 +26,7 @@ import julie.visual.assets.buttons.menuwindow.NumButton;
 import julie.visual.assets.buttons.menuwindow.QuitMenuButton;
 import julie.visual.assets.panes.TextFieldHint;
 import julie.visual.windows.assets.AppWindow;
-import julie.visual.windows.gui.generatewindow.GenerateWindow;
+import julie.visual.windows.generatewindow.GenerateWindow;
 
 /**
  * @author julie
@@ -56,6 +57,8 @@ public class MenuWindow extends AppWindow {
 		setSize(new Dimension(450, 300));
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		numButton.isDynamic(false);
+		alphButton.isDynamic(false);
 		// buttons
 		addActionListeners();
 		addComponents();
@@ -67,7 +70,7 @@ public class MenuWindow extends AppWindow {
 	}
 	
 	public void canDispose() {
-		if (confirmButton.isPressed() & alphnum()) {
+		if ((confirmButton.isPressed() & alphnum()) | quitButton.isPressed()) {
 			dispose();
 		}
 	}
@@ -91,6 +94,7 @@ public class MenuWindow extends AppWindow {
 	public WindowButton getNumButton() {
 		return this.numButton;
 	}
+	
 	public WindowButton getAlphButton() {
 		return this.alphButton;
 	}
@@ -119,13 +123,13 @@ public class MenuWindow extends AppWindow {
 	
 	private void addComponents() {
 		//
-		int inset;
 		GridBagConstraints gbcHigh = new GridBagConstraints();
 		GridBagConstraints gbcCenter = new GridBagConstraints();
 		GridBagConstraints gbcLow = new GridBagConstraints();
 		GridBagLayout layout = new GridBagLayout();
 		JPanel pane = new JPanel();
 		setContentPane(pane);
+		pane.setBackground(Color.white);
 		pane.setLayout(layout);
 		// numButton
 		gbcHigh.fill = GridBagConstraints.HORIZONTAL;
@@ -163,8 +167,7 @@ public class MenuWindow extends AppWindow {
 		gbcCenter.weighty = 1.0;
 		gbcCenter.gridx = 1;
 		gbcCenter.gridy = 3;
-		inset = 90;
-		setInsets(gbcCenter, 0, inset, 0, inset);
+		setInsets(gbcCenter, 0, 90, 0, 90);
 		pane.add(confirmButton, gbcCenter);
 		// quit button
 		gbcLow.fill = GridBagConstraints.HORIZONTAL;

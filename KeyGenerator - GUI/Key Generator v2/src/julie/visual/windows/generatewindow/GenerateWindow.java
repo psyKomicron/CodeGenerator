@@ -1,9 +1,10 @@
 /**
  * 
  */
-package julie.visual.windows.gui.generatewindow;
+package julie.visual.windows.generatewindow;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -56,6 +57,7 @@ public class GenerateWindow extends AppWindow implements Runnable {
 		generateButton.addActionListener(new GenButtListener());
 		//
 		setContentPane(contentPane);
+		contentPane.setBackground(Color.gray);
 		contentPane.setLayout(new BorderLayout());
 		buttonPane.setLayout(new GridBagLayout());
 		//
@@ -151,7 +153,7 @@ public class GenerateWindow extends AppWindow implements Runnable {
 		private static final long serialVersionUID = 1L;
 		
 		private AuthorLabel() {
-			super("<html><b>@author</b> <i>MonsieurJ</i></html>", JLabel.CENTER);
+			super("<html><b>CodeGenerator</b> <i>V2</i></html>", JLabel.CENTER);
 			setFont(new Font("Verdana", Font.ITALIC, 14));
 		}
 	}

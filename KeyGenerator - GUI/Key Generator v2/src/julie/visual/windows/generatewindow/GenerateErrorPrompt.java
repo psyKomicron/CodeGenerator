@@ -1,7 +1,7 @@
 /**
  * 
  */
-package julie.visual.windows.gui.generatewindow;
+package julie.visual.windows.generatewindow;
 
 import javax.swing.JDialog;
 

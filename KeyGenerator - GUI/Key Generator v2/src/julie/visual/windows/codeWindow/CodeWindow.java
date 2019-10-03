@@ -4,13 +4,15 @@
 package julie.visual.windows.codeWindow;
 
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import javax.swing.JScrollPane;
 
 import julie.codeGenerator.IGenerator;
 import julie.visual.assets.panes.CodesTextArea;
-import julie.visual.windows.gui.generatewindow.GenerateWindow;
+import julie.visual.windows.generatewindow.GenerateWindow;
 
 
 
@@ -35,7 +37,7 @@ public class CodeWindow extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JButton closeButton = new JButton("CLOSE");
+	private JButton closeButton = new JButton("Copy");
 	
 	private GenerateWindow parent;
 	
@@ -61,7 +63,6 @@ public class CodeWindow extends JFrame implements Runnable {
 	private void setup(int pos, GenerateWindow gw) {
 		setSize(new Dimension(500, 300));
 		setLocation(move(pos, gw.getLocation()));
-		setLayout(new BorderLayout());
 	}
 	
 	public void launchCalculation() {
@@ -92,8 +93,8 @@ public class CodeWindow extends JFrame implements Runnable {
 		GridBagConstraints gbc = new GridBagConstraints();
 		GridBagLayout layout = new GridBagLayout();
 		JPanel pane = new JPanel();
-		//scrollablePane.setLayout(new BorderLayout());
 		setContentPane(pane);
+		pane.setBackground(Color.WHITE);
 		pane.setLayout(layout);
 //		text area to display generated codes
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -160,6 +161,13 @@ public class CodeWindow extends JFrame implements Runnable {
 		return point;
 	}
 	
+	private void copyToClipboard() {
+		String ctc = textArea.getTextAreaContent();
+	    StringSelection stringSelection = new StringSelection(ctc);
+	    Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+	    clpbrd.setContents(stringSelection, null);
+	}
+	
 
 /************************************************************
  * 
@@ -170,8 +178,7 @@ public class CodeWindow extends JFrame implements Runnable {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			informParentToRemove();
-			dispose();
+			copyToClipboard();
 		}
 		
 	}

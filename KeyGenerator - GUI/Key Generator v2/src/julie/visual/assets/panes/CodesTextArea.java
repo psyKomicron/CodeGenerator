@@ -18,6 +18,7 @@ public class CodesTextArea extends JTextArea {
 	
 	private final static String newLine = "\n";
 
+	private ArrayList<String> codeArray = new ArrayList<>();
 	
 	public CodesTextArea() {
 		super();
@@ -38,15 +39,25 @@ public class CodesTextArea extends JTextArea {
 		setEditable(false);
 	}
 
-	public void addText(ArrayList<String> _codes) {
-		for (int i = 0; i < _codes.size(); i++) {
-			if (i == _codes.size() - 1) {
-				append(_codes.get(i));
+	public void addText(ArrayList<String> codes) {
+		for (int i = 0; i < codes.size(); i++) {
+			if (i == codes.size() - 1) {
+				append(codes.get(i));
+				codeArray.add(codes.get(i));
 			}
 			else {
-				append(_codes.get(i)+newLine);
+				append(codes.get(i)+newLine);
+				codeArray.add(codes.get(i)+newLine);
 			}
 		}
+	}
+	
+	public String getTextAreaContent() {
+		String content = "";
+		for (String s : codeArray) {
+			content += s;
+		}
+		return content;
 	}
 	
 }
