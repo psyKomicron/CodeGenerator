@@ -1,7 +1,9 @@
 /**
  * 
  */
-package julie.visual.windows.assets.performance;
+package julie.app.performance;
+
+import java.util.ArrayList;
 
 import julie.alphaNumGen.AlphaNumGenerator;
 import julie.codeGenerator.IGenerator;
@@ -13,6 +15,8 @@ import julie.codeGenerator.IGenerator;
 public class CodeGeneratorPerformanceTester {
 	
 	private IGenerator generator;
+	
+	private boolean withArray = false;
 
 	public CodeGeneratorPerformanceTester(IGenerator generator) {
 		this.generator = generator;
@@ -28,14 +32,34 @@ public class CodeGeneratorPerformanceTester {
 		long startTime = System.nanoTime();
 		long endTime = System.nanoTime();
 		long n = 0;
-		while (endTime - startTime < seconds) {
-			generator.generate();
-			endTime = System.nanoTime();
-			n++;
+		if (!withArray) {
+			while (endTime - startTime < seconds) {
+				generator.generate();
+//				generator.getCode();
+				endTime = System.nanoTime();
+				n++;
+			}
 		}
-		long[] result = new long[2];
+		else {
+			ArrayList<String> array = new ArrayList<>();
+			while (endTime - startTime < seconds) {
+				generator.generate();
+				array.add(generator.getCode());
+				endTime = System.nanoTime();
+				n++;
+			}
+		}
+		long[] result = new long[3];
 		result[0] = n;
 		result[1] = endTime - startTime;
 		return result;
+	}
+	
+	public void withArray(boolean b) {
+		withArray = b;
+	}
+	
+	public boolean isUsingArray() {
+		return withArray;
 	}
 }

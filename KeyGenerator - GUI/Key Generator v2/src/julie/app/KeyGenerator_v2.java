@@ -19,9 +19,7 @@ public class KeyGenerator_v2 {
 		// algo
 		// interface
 		GenerateWindow _gw = new GenerateWindow();
-		PerformanceWindow pw = new PerformanceWindow("Performance Window");
 		_gw.run();
-		pw.run();
 	}
 
 }

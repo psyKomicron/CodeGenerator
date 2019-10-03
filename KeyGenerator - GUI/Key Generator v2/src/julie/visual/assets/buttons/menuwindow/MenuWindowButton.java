@@ -18,8 +18,8 @@ public abstract class MenuWindowButton extends WindowButton {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public MenuWindowButton(String _text) {
-		super(_text);
+	public MenuWindowButton(String text) {
+		super(text);
 	}
 	
 	public boolean checkToDispose() {

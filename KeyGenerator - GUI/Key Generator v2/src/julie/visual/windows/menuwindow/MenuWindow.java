@@ -8,7 +8,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,10 +26,12 @@ import julie.visual.assets.buttons.menuwindow.AlphNumButton;
 import julie.visual.assets.buttons.menuwindow.ConfirmButton;
 import julie.visual.assets.buttons.menuwindow.MenuWindowButton;
 import julie.visual.assets.buttons.menuwindow.NumButton;
+import julie.visual.assets.buttons.menuwindow.PerfMenuButton;
 import julie.visual.assets.buttons.menuwindow.QuitMenuButton;
 import julie.visual.assets.panes.TextFieldHint;
 import julie.visual.windows.assets.AppWindow;
 import julie.visual.windows.generatewindow.GenerateWindow;
+import julie.visual.windows.performanceWindow.PerformanceWindow;
 
 /**
  * @author julie
@@ -39,6 +44,7 @@ public class MenuWindow extends AppWindow {
 	private final MenuWindowButton numButton = new NumButton("Numerical");
 	private final MenuWindowButton alphButton = new AlphNumButton("Alphanumerical");
 	private final MenuWindowButton quitButton = new QuitMenuButton("Quit & Reset", new Dimension(50, 50));
+	private final MenuWindowButton perfMenuButton = new PerfMenuButton("Benchmark mode");
 	
 	private final MenuWindowButton confirmButton = new ConfirmButton("Confirm");
 	
@@ -122,6 +128,7 @@ public class MenuWindow extends AppWindow {
 	}
 	
 	private void addComponents() {
+		perfMenuButton.addActionListener(new ButtonListener());
 		//
 		GridBagConstraints gbcHigh = new GridBagConstraints();
 		GridBagConstraints gbcCenter = new GridBagConstraints();
@@ -160,24 +167,28 @@ public class MenuWindow extends AppWindow {
 		gbcCenter.weighty = 1.0;
 		gbcCenter.gridx = 1;
 		gbcCenter.gridy = 2;
-		setInsets(gbcCenter, 20, 0, 20, 0);
+		setInsets(gbcCenter, 20, 0, 0, 0);
 		pane.add(textField, gbcCenter);
-		// confirm button
+//		confirm button
 		gbcCenter.fill = GridBagConstraints.HORIZONTAL;
 		gbcCenter.weighty = 1.0;
 		gbcCenter.gridx = 1;
 		gbcCenter.gridy = 3;
-		setInsets(gbcCenter, 0, 90, 0, 90);
+		setInsets(gbcCenter, 0, 90, 50, 90);
 		pane.add(confirmButton, gbcCenter);
-		// quit button
+//		quit button
 		gbcLow.fill = GridBagConstraints.HORIZONTAL;
 		gbcLow.weightx = 0.5;
 		gbcLow.weighty = 1.0;
 		gbcLow.gridwidth = 1;
 		gbcLow.anchor = GridBagConstraints.LAST_LINE_START;
 		gbcLow.gridx = 0;
-		gbcLow.gridy = 4;
+		gbcLow.gridy = 5;
 		pane.add(quitButton, gbcLow);
+//		performance menu
+		gbcLow.gridx = 1;
+		gbcLow.gridy = 5;
+		pane.add(perfMenuButton, gbcLow);
 	}
 	
 	private final void setInsets(GridBagConstraints gbc, int x1, int y1, int x2, int y2) {
@@ -190,5 +201,15 @@ public class MenuWindow extends AppWindow {
 		quitButton.addActionListener(new QuitButtonListener(this));
 		confirmButton.addActionListener(new ConfirmButtonListener(this));
 	}	
+	
+	
+	class ButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			new PerformanceWindow("Performance Window");
+		}
+		
+	}
 
 }
