@@ -16,8 +16,8 @@ public class AppWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	
-	public AppWindow(String _name) {
-		super(_name);
+	public AppWindow(String name) {
+		super(name);
 	}
 	
 	/**

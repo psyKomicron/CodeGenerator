@@ -4,7 +4,6 @@
 package julie.app;
 
 import julie.visual.windows.generatewindow.GenerateWindow;
-import julie.visual.windows.performanceWindow.PerformanceWindow;
 
 /**
  * @author julie

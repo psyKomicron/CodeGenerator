@@ -3,6 +3,7 @@
  */
 package julie.visual.windows.performanceWindow;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -13,9 +14,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import julie.alphaNumGen.AlphaNumGenerator;
@@ -109,8 +112,6 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 	}
 	
 	public void launchBenchmark() {
-		CodeGeneratorPerformanceTester benchmark = new CodeGeneratorPerformanceTester(getGeneratorFromCBox());
-		benchmark.withArray(getModeFromCBox());
 		long l = 0L;
 		if (!"".equals(textField.getText())) {
 			l = Long.parseLong(textField.getText());
@@ -119,12 +120,27 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 		else {
 			JOptionPane.showMessageDialog(this, "No generation max time");
 		}
-		long[] n = benchmark.getGenerationTimePerformance(l);
+		CodeGeneratorPerformanceTester benchmark = new CodeGeneratorPerformanceTester(getGeneratorFromCBox(), l);
+		benchmark.withArray(getModeFromCBox());
+		Thread thread = new Thread(benchmark);
+		thread.start();
+		WaitWindow w = new WaitWindow("Wait");
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		w.dispose();
+		System.out.println(benchmark.getGenerationTimePerformance());
+		displayPerformance(benchmark);
+	}
+	
+	private final void displayPerformance(CodeGeneratorPerformanceTester benchmark) {
 		String text = "";
 		if (benchmark.isUsingArray())
-			text = "<html><p>generated codes (using array) : " + n[0] + "</p><p> in : " + (long)n[1]/1000000000L + " seconds</p></html>";
+			text = "<html><p>generated codes (using array) : " + benchmark.getGenerationTimePerformance()[0] + "</p><p> in : " + (long)benchmark.getGenerationTimePerformance()[1]/1000000000L + " seconds</p></html>";
 		else
-			text = "<html><p>generated codes (no array): " + n[0] + "</p><p> in : " + (long)n[1]/1000000000L + " seconds</p></html>";
+			text = "<html><p>generated codes (no array): " + benchmark.getGenerationTimePerformance()[0] + "</p><p> in : " + (long)benchmark.getGenerationTimePerformance()[1]/1000000000L + " seconds</p></html>";
 		this.label.setText(text);
 	}
 	
@@ -158,6 +174,30 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			launchBenchmark();
+		}
+		
+	}
+	
+	class WaitWindow extends AppWindow {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public WaitWindow(String name) {
+			super(name);
+			this.setPreferredSize(new Dimension(200, 200));
+			JTextArea textArea = new JTextArea("Waiting for generation");
+			JPanel pane = new JPanel();
+			pane.setBackground(Color.WHITE);
+			pane.setLayout(new BorderLayout());
+			pane.add(textArea, BorderLayout.CENTER);
+			this.add(pane);
+//			
+			pack();
+			this.centerOnScreen(getBounds());
+			this.setVisible(true);
 		}
 		
 	}
