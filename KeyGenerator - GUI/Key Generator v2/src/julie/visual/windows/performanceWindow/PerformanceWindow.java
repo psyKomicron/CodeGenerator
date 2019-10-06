@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -127,21 +126,38 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 		WaitWindow w = new WaitWindow("Wait");
 		try {
 			thread.join();
+			w.dispose();
+			displayPerformance(benchmark);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		w.dispose();
-		System.out.println(benchmark.getGenerationTimePerformance());
-		displayPerformance(benchmark);
 	}
 	
 	private final void displayPerformance(CodeGeneratorPerformanceTester benchmark) {
 		String text = "";
+		String benchPerf = longFormatting(benchmark.getGenerationTimePerformance()[0]);
 		if (benchmark.isUsingArray())
-			text = "<html><p>generated codes (using array) : " + benchmark.getGenerationTimePerformance()[0] + "</p><p> in : " + (long)benchmark.getGenerationTimePerformance()[1]/1000000000L + " seconds</p></html>";
+			text = "<html><p>generated codes (using array) : " + benchPerf + "</p><p> in : " + (long)benchmark.getGenerationTimePerformance()[1]/1000000000L + " seconds</p></html>";
 		else
-			text = "<html><p>generated codes (no array): " + benchmark.getGenerationTimePerformance()[0] + "</p><p> in : " + (long)benchmark.getGenerationTimePerformance()[1]/1000000000L + " seconds</p></html>";
+			text = "<html><p>generated codes (no array): " + benchPerf + "</p><p> in : " + (long)benchmark.getGenerationTimePerformance()[1]/1000000000L + " seconds</p></html>";
 		this.label.setText(text);
+	}
+	
+	private final String longFormatting(long l) {
+		String str = "" + l;
+		String result = "";
+		int n = 0;
+		for (int i = 0; i < str.length(); i++) {
+			if (n < 3) {
+				result += "" + str.charAt(i);
+			}
+			else {
+				result += " " + str.charAt(i);
+				n = 0;
+			}
+			n++;
+		}
+		return result;
 	}
 	
 	private final IGenerator getGeneratorFromCBox() {

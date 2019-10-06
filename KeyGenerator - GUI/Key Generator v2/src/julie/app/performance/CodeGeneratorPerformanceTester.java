@@ -18,7 +18,7 @@ public class CodeGeneratorPerformanceTester implements Runnable {
 	
 	private boolean withArray = false;
 	
-	private long[] result;
+	private long[] result = new long[2];
 	
 	private long seconds;
 
@@ -61,7 +61,6 @@ public class CodeGeneratorPerformanceTester implements Runnable {
 		if (!withArray) {
 			while (endTime - startTime < seconds) {
 				generator.generate();
-//				generator.getCode();
 				endTime = System.nanoTime();
 				n++;
 			}
@@ -75,7 +74,6 @@ public class CodeGeneratorPerformanceTester implements Runnable {
 				n++;
 			}
 		}
-		long[] result = new long[3];
 		result[0] = n;
 		result[1] = endTime - startTime;
 	}
