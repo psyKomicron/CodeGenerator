@@ -4,7 +4,6 @@
 package julie.visual.assets.buttons.listeners.classes;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 import julie.visual.assets.buttons.listeners.WindowButtonListener;
 import julie.visual.windows.menuwindow.MenuWindow;
@@ -36,7 +35,6 @@ public class ConfirmButtonListener extends WindowButtonListener {
 				result += c;
 			}
 		}
-		System.out.println(result);
 		return result;
 	}
 }

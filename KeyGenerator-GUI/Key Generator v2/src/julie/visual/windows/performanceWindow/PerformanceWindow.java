@@ -144,6 +144,7 @@ public class PerformanceWindow extends AppWindow {
 		});
 		displayThread.start();
 		benchThread.start();
+		System.gc();
 	}
 	
 	private final void displayPerformance(CodeGeneratorPerformanceTester benchmark) {
@@ -163,12 +164,12 @@ public class PerformanceWindow extends AppWindow {
 			"</p><p> in : " + 
 			(long)benchmark.getGenerationTimePerformance()[1]/1000000000L + 
 			" seconds</p>";
+		
 		text += "<p>for a total of : " + longFormatting(benchmark.getGenerationTimePerformance()[0]*8L) + " char</p></html>";
 		this.label.setText(text);
 	}
 	
 	private final String longFormatting(long l) {
-		System.out.println(l);
 		String str = "" + l;
 		String result = "";
 		int n = 0;

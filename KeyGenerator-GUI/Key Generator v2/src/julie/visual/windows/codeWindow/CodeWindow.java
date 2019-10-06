@@ -55,7 +55,7 @@ public class CodeWindow extends JFrame implements Runnable {
 	
 	/**
 	 * Used only by the constructor. Setup all needed parameters.
-	 * @param pos (int) number representing the position of the CodeWindow  
+	 * @param pos number representing the position of the CodeWindow  
 	 * @param gw Parent GenerateWindow. The window (this) is not directly 
 	 * 		  fitted into the GenerateWindow but rather uses the position 
 	 * 		  of it to calculate it's own
@@ -72,7 +72,7 @@ public class CodeWindow extends JFrame implements Runnable {
 	}
 	
 	public void setRepetitionNumber(int number) {
-		if (number >= 1 & number <= 150000) {
+		if (number >= 1) {
 			repetitionNumber = number;
 		}
 	}
@@ -161,13 +161,6 @@ public class CodeWindow extends JFrame implements Runnable {
 		return point;
 	}
 	
-	private void copyToClipboard() {
-		String ctc = textArea.getTextAreaContent();
-	    StringSelection stringSelection = new StringSelection(ctc);
-	    Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
-	    clpbrd.setContents(stringSelection, null);
-	}
-	
 
 /************************************************************
  * 
@@ -178,7 +171,10 @@ public class CodeWindow extends JFrame implements Runnable {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			copyToClipboard();
+			String ctc = textArea.getTextAreaContent();
+		    StringSelection stringSelection = new StringSelection(ctc);
+		    Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+		    clpbrd.setContents(stringSelection, null);
 		}
 		
 	}
