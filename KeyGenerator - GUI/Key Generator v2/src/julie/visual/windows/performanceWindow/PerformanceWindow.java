@@ -11,13 +11,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import julie.alphaNumGen.AlphaNumGenerator;
@@ -30,19 +30,21 @@ import julie.visual.windows.assets.AppWindow;
  * @author julie
  *
  */
-public class PerformanceWindow extends AppWindow implements Runnable {
+public class PerformanceWindow extends AppWindow {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private JButton button = new JButton("Launch");
 	
 	private JComboBox comboBoxGenerator;
 	private JComboBox comboBox;
 	
-	private JTextField textField = new JTextField();
-	
 	private JLabel label = new JLabel();
+	
+	private JTextField textField = new JTextField();
 	
 	/**
 	 * @param _name
@@ -54,11 +56,6 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 		pack();
 		setVisible(true);
 	}
-
-	@Override
-	public void run() {
-		
-	}
 	
 	private void setup() {
 		setSize(new Dimension(400, 300));
@@ -67,7 +64,6 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 	
 	private void addComponents() {
 		JPanel pane = new JPanel();
-		JButton button = new JButton("Launch");
 		button.addActionListener(new ButtonListener());
 		button.setPreferredSize(new Dimension(50, 50));
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -110,7 +106,7 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 		pane.add(button, gbc);
 	}
 	
-	public void launchBenchmark() {
+	public void launchBenchmark() throws InterruptedException {
 		long l = 0L;
 		if (!"".equals(textField.getText())) {
 			l = Long.parseLong(textField.getText());
@@ -121,35 +117,64 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 		}
 		CodeGeneratorPerformanceTester benchmark = new CodeGeneratorPerformanceTester(getGeneratorFromCBox(), l);
 		benchmark.withArray(getModeFromCBox());
-		Thread thread = new Thread(benchmark);
-		thread.start();
-		WaitWindow w = new WaitWindow("Wait");
-		try {
-			thread.join();
-			w.dispose();
-			displayPerformance(benchmark);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		thread 1
+		Thread benchThread = new Thread(new Runnable() {
+			public void run() {
+				benchmark.run();
+				displayPerformance(benchmark);
+			}
+		});
+//		thread 2
+		Thread displayThread = new Thread(new Runnable() {
+			public void run() {
+				while (benchThread.isAlive()) {
+					String text =  "Generating";
+					String s = "";
+					for (int i = 0; i < text.length(); i++) {
+						s += text.charAt(i);
+						button.setText(s);
+						try {
+							Thread.sleep(300);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		});
+		displayThread.start();
+		benchThread.start();
 	}
 	
 	private final void displayPerformance(CodeGeneratorPerformanceTester benchmark) {
 		String text = "";
 		String benchPerf = longFormatting(benchmark.getGenerationTimePerformance()[0]);
 		if (benchmark.isUsingArray())
-			text = "<html><p>generated codes (using array) : " + benchPerf + "</p><p> in : " + (long)benchmark.getGenerationTimePerformance()[1]/1000000000L + " seconds</p></html>";
+			text = 
+			"<html><p>generated codes (using array) : " + 
+			benchPerf + 
+			"</p><p> in : " + 
+			(long)benchmark.getGenerationTimePerformance()[1]/1000000000L + 
+			" seconds</p>";
 		else
-			text = "<html><p>generated codes (no array): " + benchPerf + "</p><p> in : " + (long)benchmark.getGenerationTimePerformance()[1]/1000000000L + " seconds</p></html>";
+			text = 
+			"<html><p>generated codes (no array): " + 
+			benchPerf + 
+			"</p><p> in : " + 
+			(long)benchmark.getGenerationTimePerformance()[1]/1000000000L + 
+			" seconds</p>";
+		text += "<p>for a total of : " + longFormatting(benchmark.getGenerationTimePerformance()[0]*8L) + " char</p></html>";
 		this.label.setText(text);
 	}
 	
 	private final String longFormatting(long l) {
+		System.out.println(l);
 		String str = "" + l;
 		String result = "";
 		int n = 0;
-		for (int i = 0; i < str.length(); i++) {
+		for (int i = str.length() - 1; i >= 0; i--) {
 			if (n < 3) {
-				result += "" + str.charAt(i);
+				result += str.charAt(i);
 			}
 			else {
 				result += " " + str.charAt(i);
@@ -157,7 +182,10 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 			}
 			n++;
 		}
-		return result;
+		StringBuilder builder = new StringBuilder();
+		builder.append(result);
+		builder.reverse();
+		return new String(builder);
 	}
 	
 	private final IGenerator getGeneratorFromCBox() {
@@ -189,31 +217,37 @@ public class PerformanceWindow extends AppWindow implements Runnable {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			launchBenchmark();
+			try {
+				launchBenchmark();
+			} catch(Exception e) {
+			}
 		}
 		
 	}
 	
-	class WaitWindow extends AppWindow {
-
-		/**
-		 * 
-		 */
+	static class WaitWindow extends AppWindow {		
+		
 		private static final long serialVersionUID = 1L;
-
-		public WaitWindow(String name) {
-			super(name);
-			this.setPreferredSize(new Dimension(200, 200));
-			JTextArea textArea = new JTextArea("Waiting for generation");
-			JPanel pane = new JPanel();
-			pane.setBackground(Color.WHITE);
-			pane.setLayout(new BorderLayout());
-			pane.add(textArea, BorderLayout.CENTER);
-			this.add(pane);
-//			
-			pack();
+	
+		public static ArrayList<WaitWindow> instances = new ArrayList<>();
+	
+		public WaitWindow() {
+			super("Wait Window");
+			JPanel p = new JPanel();
+			this.setContentPane(p);
+			p.setLayout(new BorderLayout());
+			p.add(new JLabel("Generating"), BorderLayout.CENTER);
+			p.add(new JButton("OK"), BorderLayout.SOUTH);
+			this.pack();
 			this.centerOnScreen(getBounds());
 			this.setVisible(true);
+			instances.add(this);
+		}
+		
+		public static void closeInstances() {
+			for (WaitWindow w : instances) {
+				w.dispose();
+			}
 		}
 		
 	}

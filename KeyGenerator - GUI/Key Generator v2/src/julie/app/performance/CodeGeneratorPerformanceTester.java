@@ -51,6 +51,10 @@ public class CodeGeneratorPerformanceTester implements Runnable {
 	public boolean isUsingArray() {
 		return withArray;
 	}
+	
+	public void launchCalculation() {
+		
+	}
 
 	@Override
 	public void run() {
