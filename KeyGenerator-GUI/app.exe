@@ -1,0 +1,2 @@
+@echo off
+java -jar KeyGeneratorV2_GUI

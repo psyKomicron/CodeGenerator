@@ -67,7 +67,11 @@ public class CodeWindow extends JFrame implements Runnable {
 	
 	public void launchCalculation() {
 		addComponents();
-		displayCodes();
+		new Thread(new Runnable() {
+			public void run() {
+				displayCodes();
+			}
+		}).start();
 		setVisible(true);
 	}
 	
