@@ -39,12 +39,13 @@ public class PerformanceWindow extends AppWindow {
 
 	private JButton button = new JButton("Launch");
 	
-	private JComboBox comboBoxGenerator;
-	private JComboBox comboBox;
+	private JComboBox cBGenerator;
+	private JComboBox cBMode;
 	
 	private JLabel label = new JLabel();
 	
-	private JTextField textField = new JTextField();
+	private JTextField nbCodesField = new JTextField();
+	private JTextField codeLengthField = new JTextField();
 	
 	/**
 	 * @param _name
@@ -71,12 +72,19 @@ public class PerformanceWindow extends AppWindow {
 		pane.setLayout(layout);
 		pane.setBackground(Color.LIGHT_GRAY);
 		this.setContentPane(pane);
-//		combo box
-		String[] content = { "Alphanumerical", "Numerical" };
-		comboBoxGenerator = new JComboBox(content);
-		String[] type = { "with array", "without array" };
-		comboBox = new JComboBox(type);
-//		grid
+//		Combo Boxes
+		String[] content = { 
+				"Alphanumerical", 
+				"Numerical" 
+		};
+		cBGenerator = new JComboBox(content);
+//		-------------------------------------
+		String[] type = { 
+				"with array", 
+				"without array" 
+		};
+		cBMode = new JComboBox(type);
+//		Grid
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.NORTH;
 		gbc.weightx = 0.0;
@@ -84,32 +92,36 @@ public class PerformanceWindow extends AppWindow {
 		gbc.ipadx = 200;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-//		combo box 1
-		pane.add(comboBoxGenerator, gbc);
-//		combo box 2
+//		Combo Box 1
+		pane.add(cBGenerator, gbc);
+//		Combo Box 2
 		gbc.gridx = 1;
-		pane.add(comboBox, gbc);
-//		text field
+		pane.add(cBMode, gbc);
+//		Text Field 1
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.insets = new Insets(20, 0, 20, 0);
-		pane.add(textField, gbc);
-//		label
+		pane.add(nbCodesField, gbc);
+//		Text Field 2
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		pane.add(codeLengthField, gbc);
+//		Label
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		gbc.insets = new Insets(0, 20, 0, 0);
 		pane.add(label ,gbc);
-//		button
+//		Button
 		gbc.gridx = 0;
-		gbc.gridy = 2;
+		gbc.gridy = 3;
 		gbc.insets = new Insets(0, 0, 0, 0);
 		pane.add(button, gbc);
 	}
 	
 	public void launchBenchmark() throws InterruptedException {
 		long l = 0L;
-		if (!"".equals(textField.getText())) {
-			l = Long.parseLong(textField.getText());
+		if (!"".equals(nbCodesField.getText())) {
+			l = Long.parseLong(nbCodesField.getText());
 			l *= 1000000000L;
 		}
 		else {
@@ -117,29 +129,32 @@ public class PerformanceWindow extends AppWindow {
 		}
 		CodeGeneratorPerformanceTester benchmark = new CodeGeneratorPerformanceTester(getGeneratorFromCBox(), l);
 		benchmark.withArray(getModeFromCBox());
-//		thread 1
+//		Thread 1
 		Thread benchThread = new Thread(new Runnable() {
 			public void run() {
 				benchmark.run();
 				displayPerformance(benchmark);
 			}
 		});
-//		thread 2
+//		Thread 2
 		Thread displayThread = new Thread(new Runnable() {
 			public void run() {
 				while (benchThread.isAlive()) {
 					String text =  "Generating";
 					String s = "";
 					for (int i = 0; i < text.length(); i++) {
-						s += text.charAt(i);
-						button.setText(s);
-						try {
-							Thread.sleep(300);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+						if (benchThread.isAlive()) {
+							s += text.charAt(i);
+							button.setText(s);
+							try {
+								Thread.sleep(300);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
+				button.setText("Launch");
 			}
 		});
 		displayThread.start();
@@ -191,7 +206,7 @@ public class PerformanceWindow extends AppWindow {
 	
 	private final IGenerator getGeneratorFromCBox() {
 		IGenerator g;
-		String s = (String)comboBoxGenerator.getSelectedItem();
+		String s = (String)cBGenerator.getSelectedItem();
 		if (s == "Alphanumerical") {
 			g = new AlphaNumGenerator();
 		}
@@ -205,13 +220,18 @@ public class PerformanceWindow extends AppWindow {
 	}
 	
 	private final boolean getModeFromCBox() {
-		String s = (String)comboBox.getSelectedItem();
+		String s = (String)cBMode.getSelectedItem();
 		if (s == "with array") {
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+	
+	private final int getLengthFromField() {
+		int n = Integer.parseInt(codeLengthField.getText());
+		return n;
 	}
 	
 	class ButtonListener implements ActionListener {

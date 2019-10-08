@@ -27,7 +27,7 @@ public class CodesTextArea extends JTextArea {
 	}
 	
 	private final void setup() {
-		setFont(new Font("Verdana", Font.BOLD, 17));
+		setFont(new Font("Verdana", Font.PLAIN, 17));
 		setOpaque(true);
 		setAlignmentX(CENTER_ALIGNMENT);
 		setAlignmentY(CENTER_ALIGNMENT);
