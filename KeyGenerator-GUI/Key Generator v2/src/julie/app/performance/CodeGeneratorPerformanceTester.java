@@ -5,7 +5,6 @@ package julie.app.performance;
 
 import java.util.ArrayList;
 
-import julie.alphaNumGen.AlphaNumGenerator;
 import julie.codeGenerator.IGenerator;
 
 /**
@@ -22,6 +21,7 @@ public class CodeGeneratorPerformanceTester implements Runnable {
 	
 	private long seconds;
 
+	
 	public CodeGeneratorPerformanceTester(IGenerator generator) {
 		this.generator = generator;
 	}
@@ -52,13 +52,16 @@ public class CodeGeneratorPerformanceTester implements Runnable {
 		return withArray;
 	}
 	
-	public void launchCalculation() {
-		
+	public int getCodeLength() {
+		return generator.getCodeLength();
+	}
+	
+	public void setCodeLength(int n) {
+		generator.setCodeLength(n);
 	}
 
 	@Override
 	public void run() {
-		generator = new AlphaNumGenerator();
 		long startTime = System.nanoTime();
 		long endTime = System.nanoTime();
 		long n = 0;

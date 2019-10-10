@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import julie.alphaNumGen.AlphaNumGenerator;
+import julie.codeGenerator.generators.AlphaNumGenerator;
 import julie.app.performance.CodeGeneratorPerformanceTester;
 import julie.codeGenerator.IGenerator;
 import julie.codeGenerator.generators.NumGenerator;
@@ -97,23 +97,34 @@ public class PerformanceWindow extends AppWindow {
 //		Combo Box 2
 		gbc.gridx = 1;
 		pane.add(cBMode, gbc);
-//		Text Field 1
+//		Text Field 1 hint
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.insets = new Insets(20, 0, 20, 0);
-		pane.add(nbCodesField, gbc);
-//		Text Field 2
+		gbc.insets = new Insets(20, 0, 0, 0);
+		pane.add(new JLabel("Benchmark duration (seconds)"), gbc);
+//		Text Field 1
 		gbc.gridx = 0;
 		gbc.gridy = 2;
+		gbc.insets = new Insets(0, 0, 0, 0);
+		pane.add(nbCodesField, gbc);
+//		Text Field 2 hint
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.insets = new Insets(20, 0, 0, 0);
+		pane.add(new JLabel("Code length"), gbc);
+//		Text Field 2
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		gbc.insets = new Insets(0, 0, 20, 0);
 		pane.add(codeLengthField, gbc);
-//		Label
+//		Result label
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		gbc.insets = new Insets(0, 20, 0, 0);
 		pane.add(label ,gbc);
 //		Button
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 5;
 		gbc.insets = new Insets(0, 0, 0, 0);
 		pane.add(button, gbc);
 	}
@@ -129,6 +140,7 @@ public class PerformanceWindow extends AppWindow {
 		}
 		CodeGeneratorPerformanceTester benchmark = new CodeGeneratorPerformanceTester(getGeneratorFromCBox(), l);
 		benchmark.withArray(getModeFromCBox());
+		benchmark.setCodeLength(getLengthFromField());
 //		Thread 1
 		Thread benchThread = new Thread(new Runnable() {
 			public void run() {
@@ -150,6 +162,8 @@ public class PerformanceWindow extends AppWindow {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 						}
+						else
+							i = text.length();
 					}
 				}
 				button.setText("Launch");
@@ -178,7 +192,7 @@ public class PerformanceWindow extends AppWindow {
 			(long)benchmark.getGenerationTimePerformance()[1]/1000000000L + 
 			" seconds</p>";
 		
-		text += "<p>for a total of : " + longFormatting(benchmark.getGenerationTimePerformance()[0]*8L) + " char</p></html>";
+		text += "<p>for a total of : " + longFormatting(benchmark.getGenerationTimePerformance()[0]*(long)benchmark.getCodeLength()) + " char</p></html>";
 		this.label.setText(text);
 	}
 	

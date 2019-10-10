@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import julie.alphaNumGen.AlphaNumGenerator;
+import julie.codeGenerator.generators.AlphaNumGenerator;
 import julie.codeGenerator.IGenerator;
 import julie.codeGenerator.generators.NumGenerator;
 import julie.visual.assets.buttons.WindowButton;
@@ -97,6 +97,7 @@ public class GenerateWindow extends AppWindow implements Runnable {
 			generator = new NumGenerator();
 		else
 			generator = null;
+		generator.setCodeLength(11);
 		generatorType = mode;
 	}
 	
