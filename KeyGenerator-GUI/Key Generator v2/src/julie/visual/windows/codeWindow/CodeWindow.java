@@ -125,7 +125,7 @@ public class CodeWindow extends JFrame implements Runnable {
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.EAST;
 		String text = 
-				"<html><p>Scroll UP to show all codes</p><p>Click on close to close this window</p></html>";
+				"<html><p>Scroll UP to show all codes</p><p>Click on Copy to copy generated codes in clipboard</p></html>";
 		pane.add(new JLabel(text), gbc);
 	}
 	

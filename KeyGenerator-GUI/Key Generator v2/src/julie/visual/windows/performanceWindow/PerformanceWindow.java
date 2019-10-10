@@ -143,14 +143,12 @@ public class PerformanceWindow extends AppWindow {
 					String text =  "Generating";
 					String s = "";
 					for (int i = 0; i < text.length(); i++) {
-						if (benchThread.isAlive()) {
 							s += text.charAt(i);
 							button.setText(s);
 							try {
 								Thread.sleep(300);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
-							}
 						}
 					}
 				}

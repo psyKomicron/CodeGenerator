@@ -17,10 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import julie.visual.assets.buttons.WindowButton;
-import julie.visual.assets.buttons.listeners.classes.AlphButtonListener;
-import julie.visual.assets.buttons.listeners.classes.ConfirmButtonListener;
-import julie.visual.assets.buttons.listeners.classes.NumButtonListener;
-import julie.visual.assets.buttons.listeners.classes.QuitButtonListener;
+import julie.visual.assets.buttons.listeners.WindowButtonListener;
 import julie.visual.assets.buttons.menuwindow.AlphNumButton;
 import julie.visual.assets.buttons.menuwindow.ConfirmButton;
 import julie.visual.assets.buttons.menuwindow.MenuWindowButton;
@@ -75,16 +72,9 @@ public class MenuWindow extends AppWindow {
 	}
 	
 	public void canDispose() {
-		if ((confirmButton.isPressed() & alphnum()) | quitButton.isPressed()) {
+		if ((confirmButton.isPressed() & (numButton.isPressed() | alphButton.isPressed())) | quitButton.isPressed()) {
 			dispose();
 		}
-	}
-	
-	private boolean alphnum() {
-		boolean b = false;
-		if (numButton.isPressed() | alphButton.isPressed())
-			b = true;
-		return b;
 	}
 	
 	public GenerateWindow getGenerateWindow() {
@@ -127,7 +117,11 @@ public class MenuWindow extends AppWindow {
 	}
 	
 	private void addComponents() {
-		perfMenuButton.addActionListener(new ButtonListener());
+		perfMenuButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new PerformanceWindow("Performance Window");
+			}
+		});
 		//
 		GridBagConstraints gbcHigh = new GridBagConstraints();
 		GridBagConstraints gbcCenter = new GridBagConstraints();
@@ -195,20 +189,44 @@ public class MenuWindow extends AppWindow {
 	}
 	
 	private void addActionListeners() {
-		numButton.addActionListener(new NumButtonListener(this));
-		alphButton.addActionListener(new AlphButtonListener(this));
-		quitButton.addActionListener(new QuitButtonListener(this));
-		confirmButton.addActionListener(new ConfirmButtonListener(this));
+		numButton.addActionListener(new WindowButtonListener(this) {
+			public void actionPerformed(ActionEvent arg0) {
+				getParentWindow().getGenerateWindow().setCodeGeneratorMode("Numerical");
+				getParentWindow().setup();
+				askToDispose(arg0);
+			}
+		});
+		alphButton.addActionListener(new WindowButtonListener(this) {
+			public void actionPerformed(ActionEvent arg0) {
+				getParentWindow().getGenerateWindow().setCodeGeneratorMode("Alphanumerical");
+				getParentWindow().setup();
+				askToDispose(arg0);
+			}
+		});
+		quitButton.addActionListener(new WindowButtonListener(this) {
+			public void actionPerformed(ActionEvent arg0) {
+				getParentWindow().getGenerateWindow().setCodeGeneratorMode("");
+				getParentWindow().getGenerateWindow().setCodeGenerationNumber(10);
+				this.askToDispose(arg0);
+			}
+		});
+		confirmButton.addActionListener(new WindowButtonListener(this) {
+			public void actionPerformed(ActionEvent arg0) {
+				String text = getParentWindow().getTextField().getText();
+				if (!"".equals(text)) {
+					getParentWindow().getGenerateWindow().setCodeGenerationNumber(Integer.parseInt(parseText(text)));
+					askToDispose(arg0);
+				}
+			}
+			private final String parseText(String str) {
+				String result = "";
+				char[] array = str.toCharArray();
+				for (char c : array)
+					if (!Character.isWhitespace(c))
+						result += c;
+				return result;
+			}
+		});
 	}	
-	
-	
-	class ButtonListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			new PerformanceWindow("Performance Window");
-		}
-		
-	}
 
 }
